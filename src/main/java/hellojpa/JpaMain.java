@@ -14,34 +14,16 @@ public class JpaMain {
 
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
-            //멤버 추가.
-//            Member member = new Member();
-//            member.setId(2L);            //long 타입이므로 L을 붙임.
-//            member.setName("HelloB");
-//            em.persist(member);
 
-            //멤버 조회
-//            Member findMember = em.find(Member.class, 1L);
-//            System.out.println("findMember.id=" +findMember.getId());
-//            System.out.println("findMember.name="+ findMember.getName());
+            //비영속
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
 
-            //JPQL을 이용해 전체 멤버 조회
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)  //페이지 기능 5번째부터 8번째까지 조회
-                    .setMaxResults(8)
-                    .getResultList();
+            //영속
+            em.persist(member);
 
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());;
-            }
-
-            //멤버 수정.
-//            findMember.setName("HelloJPA");
-
-            //멤버 삭제
-            //em.remove(findMember);
-
-            tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다.)
+            tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
         }catch (Exception e){   //예외 발생 시 롤백
             tx.rollback();
