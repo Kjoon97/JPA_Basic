@@ -15,13 +15,10 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            //비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
+            Member findMember1 = em.find(Member.class, 101L);   //첨 조회 할때는 디비에 sql문 날리고 조회, 1차 캐시 저장 반환.
+            Member findMember2 = em.find(Member.class, 101L);   // 2번째 조회는 1차 캐시에서만 조회.
 
-            //영속
-            em.persist(member);
+            System.out.println("result="+(findMember1 == findMember2)); // 동일성 보장.
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
