@@ -15,10 +15,14 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Member member = new Member(300L, "member300");
-            em.persist(member);
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAAA");
 
-            em.flush();     //flush해주면 여기서 sql문이 db로 날라감.
+            //em.detach(member);  //member는 JPA에서 관리 안하게 된다.(영속성 컨텍스트에서 제외= member 준영속화) -> tx.commit()할때 아무일도 안일어나게 됨. 원래 경우에 update쿼리를 날려야함.
+            em.clear();  //영속성 컨텍스트 비우기. 초기화 -> 1차 캐시 모두 지움.
+
+            Member member2 = em.find(Member.class, 150L);
+
             System.out.println("====================");
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
