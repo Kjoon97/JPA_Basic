@@ -15,10 +15,11 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Member member = em.find(Member.class, 150L);
-            member.setName("zzzzzzz");    //엔티티 name 변경.
+            Member member = new Member(300L, "member300");
+            em.persist(member);
 
-            //JPA는 그냥 값을 바꾸면 트랜잭션 커밋 시점에 변경을 반영한다.(더티체킹)
+            em.flush();     //flush해주면 여기서 sql문이 db로 날라감.
+            System.out.println("====================");
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
