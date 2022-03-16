@@ -16,7 +16,7 @@
             <property name="hibernate.format_sql" value="true"/>          <!-- sql 쿼리날릴 때 콘솔창에 예쁘게 formatting-->
             <property name="hibernate.use_sql_comments" value="true"/>    <!-- sql 쿼리날릴 때 콘솔창 주석 -->
             <property name="hibernate.jdbc.batch_size" value="10"/>       <!-- sql 쿼리날릴 때 단위 사이즈, vlaue만큼 한꺼번에 모아서 db에 쿼리 날림.(버퍼링 기능) -->
-            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
 </persistence>
