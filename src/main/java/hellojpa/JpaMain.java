@@ -15,13 +15,12 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAAAAA");
+            Member memberA = new Member();
+            memberA.setId(1L);
+            memberA.setUsername("A");
+            memberA.setRoleType(RoleType.USER);
 
-            //em.detach(member);  //member는 JPA에서 관리 안하게 된다.(영속성 컨텍스트에서 제외= member 준영속화) -> tx.commit()할때 아무일도 안일어나게 됨. 원래 경우에 update쿼리를 날려야함.
-            em.clear();  //영속성 컨텍스트 비우기. 초기화 -> 1차 캐시 모두 지움.
-
-            Member member2 = em.find(Member.class, 150L);
+            em.persist(memberA);
 
             System.out.println("====================");
 
