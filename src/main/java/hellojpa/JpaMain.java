@@ -16,12 +16,9 @@ public class JpaMain {
         try{
 
             Member memberA = new Member();
-            memberA.setId(1L);
             memberA.setUsername("A");
-            memberA.setRoleType(RoleType.USER);
-
-            em.persist(memberA);
-
+            em.persist(memberA); //--> IDENTITY 전략일 경우 이때 예외적으로 데이터베이스에 insert 쿼리를 날린다.(원래는 커밋하는 시점에 insert가 날라감)
+                                //IDENTITY 경우 디비에 값을 넣어야 PK값을 알 수 있기 때문이다.
             System.out.println("====================");
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
