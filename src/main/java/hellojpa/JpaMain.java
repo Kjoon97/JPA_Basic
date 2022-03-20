@@ -15,10 +15,13 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Member memberA = new Member();
-            memberA.setUsername("A");
-            em.persist(memberA); //--> IDENTITY 전략일 경우 이때 예외적으로 데이터베이스에 insert 쿼리를 날린다.(원래는 커밋하는 시점에 insert가 날라감)
-                                //IDENTITY 경우 디비에 값을 넣어야 PK값을 알 수 있기 때문이다.
+            Member member= new Member();
+            member.setUsername("C");
+            System.out.println("====================");
+
+            em.persist(member);
+
+            System.out.println("member.id = " + member.getId());
             System.out.println("====================");
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
