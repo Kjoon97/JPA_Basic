@@ -15,14 +15,26 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Member member= new Member();
-            member.setUsername("C");
-            System.out.println("====================");
+            Team team = new Team();
+            Team team2 = new Team();
+            team.setName("TeamA");
+            team2.setName("TeamB");
+            em.persist(team);  //em.persist()되면 항상 id값 들어감. 영속 상태 들어가기전 무조건 pk값 세팅된다.
+            em.persist(team2);
 
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
             em.persist(member);
 
-            System.out.println("member.id = " + member.getId());
-            System.out.println("====================");
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+
+            //연관관계 (외래키) 변경
+            Team TeamB = em.find(Team.class, 2L);
+            findMember.setTeam(TeamB);
+
+            System.out.println("findTeam = " + findTeam.getName());
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
