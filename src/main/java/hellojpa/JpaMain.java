@@ -16,25 +16,23 @@ public class JpaMain {
         try{
 
             Team team = new Team();
-            Team team2 = new Team();
             team.setName("TeamA");
-            team2.setName("TeamB");
             em.persist(team);  //em.persist()되면 항상 id값 들어감. 영속 상태 들어가기전 무조건 pk값 세팅된다.
-            em.persist(team2);
 
             Member member = new Member();
             member.setUsername("member1");
             member.setTeam(team);
             em.persist(member);
 
+            em.flush();
+            em.clear();
+
             Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
+            List<Member> members = findMember.getTeam().getMembers();
 
-            //연관관계 (외래키) 변경
-            Team TeamB = em.find(Team.class, 2L);
-            findMember.setTeam(TeamB);
-
-            System.out.println("findTeam = " + findTeam.getName());
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 

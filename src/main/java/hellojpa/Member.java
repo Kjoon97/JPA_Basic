@@ -20,6 +20,7 @@ public class Member {
     @ManyToOne
     @JoinColumn(name="TEAM_ID")    //관계와 조인하는 컬럼 명시
     private Team team;
+    // 1대N 관계에서 N인 곳( = ManyToOne 을 쓰는 곳 = 외래키가 있는 곳)을 연관관계 주인으로 해야한다.!!
 
     public Long getId() {
         return id;
