@@ -17,6 +17,12 @@ public class Team {
     private List<Member> members = new ArrayList<>();  //ArrayList<>()로 초기화하면 add할때 null포인트가 안 뜸.
     //members 변수에 값을 넣어도 DB에 들어 가지 않는다(연관관계 주인이 아니기 때문!!)
 
+    //연관관계 편의 매소드 여기서 구현해도 되고, Member 에서 구현해도된다.
+//    public void addMember(Member member) {
+//        member.setTeam(this);
+//        members.add(member);
+//    }
+
     public List<Member> getMembers() {
         return members;
     }
@@ -36,4 +42,5 @@ public class Team {
     public void setName(String name) {
         this.name = name;
     }
+
 }
