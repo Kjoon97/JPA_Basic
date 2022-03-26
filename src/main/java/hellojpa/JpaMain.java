@@ -1,7 +1,8 @@
 package hellojpa;
 
+import hellojpa.inheritanceMapping.Movie;
+
 import javax.persistence.*;
-import java.util.List;
 
 public class JpaMain {
 
@@ -14,32 +15,19 @@ public class JpaMain {
 
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);  //em.persist()되면 항상 id값 들어감. 영속 상태 들어가기전 무조건 pk값 세팅된다.
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.changeTeam(team);       //연관관계 주인인 곳에서 세팅한경우.
-          //  team.addMember(member);      //연관관계 주인이 아닌 곳에서 세팅한 경우.
+            Movie movie = new Movie();
+            movie.setDirector("a");
+            movie.setActor("bbbb");
+            movie.setName("바람과 함께 사라지다.");
+            movie.setPrice(10000);
+            em.persist(movie);
 
-            em.persist(member);
-//            em.flush();
-//            em.clear();
-            //flush와 clear를 하면 1차 캐시에 아무 것도 없기때문에 DB에서 다시 조회한다. 그렇기 때문에  JPA가 외래키도 인식해서 members도 다시 조회해야겠고 동작한다.
-            //하지만 flush와 clear를 안할 때는 1차 캐시가 존재하므로 연관관계 주인에서만 세팅을 한 상태이면 findTeam에서 member가 빈 상태이다.
-            //그러므로 연관관계 주인이 아닌 곳에서도 세팅을 해줘야한다.(team.getMembers().add(member))
-            //일반적인 상황에서는 flush와 clear를 하지 않는다.학습을 위해서 쿼리문을 보기 위해서 flush와 clear를 한것이다.
+            em.flush();
+            em.clear();
 
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            System.out.println("====================");
-            for (Member m : members) {
-                System.out.println("m = " + m.getUsername());
-            }
-            System.out.println("====================");
-
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
         }catch (Exception e){   //예외 발생 시 롤백
