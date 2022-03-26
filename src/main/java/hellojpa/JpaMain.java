@@ -3,6 +3,7 @@ package hellojpa;
 import hellojpa.inheritanceMapping.Movie;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 public class JpaMain {
 
@@ -16,18 +17,16 @@ public class JpaMain {
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
 
-            Movie movie = new Movie();
-            movie.setDirector("a");
-            movie.setActor("bbbb");
-            movie.setName("바람과 함께 사라지다.");
-            movie.setPrice(10000);
-            em.persist(movie);
+            Member member = new Member();
+            member.setCreateBy("kim");
+            member.setUsername("user1");
+            member.setCreateDate(LocalDateTime.now());
+
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = " + findMovie);
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
         }catch (Exception e){   //예외 발생 시 롤백
