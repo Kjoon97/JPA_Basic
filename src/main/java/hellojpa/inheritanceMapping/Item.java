@@ -3,9 +3,8 @@ package hellojpa.inheritanceMapping;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn        //DTYPE - 기본으로 하위 엔티티들의 클래스명이 들어간다. 바꾸고 싶으면 하위 클래스에 @DiscriminatorValue("") 쓰면 됨.
-public class Item {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Item {  //어느 전략이든 원래 추상클래스로 만드는게 맞다.
 
     @Id @GeneratedValue
     private Long id;
