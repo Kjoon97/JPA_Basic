@@ -28,7 +28,7 @@ public class Member extends BaseEntity{
         this.team = team;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="LOCKER_ID")
     private Locker locker;
 
