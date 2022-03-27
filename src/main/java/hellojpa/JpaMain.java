@@ -4,6 +4,7 @@ import hellojpa.inheritanceMapping.Movie;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class JpaMain {
 
@@ -16,20 +17,25 @@ public class JpaMain {
 
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
             Member member = new Member();
             member.setUsername("user1");
-
+            member.setTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-//            Member member1 = em.find(Member.class, member.getId());
-            Member member1 = em.getReference(Member.class, member.getId());
-            System.out.println("member1 = " + member1.getClass());  //하이버네이트가 만든 프록시 클래스(가짜 클래스), get할때 프록시 초기화됨.
-            System.out.println("member1.username = " + member1.getUsername());
-            System.out.println("member1.username = " + member1.getUsername());
+            Member member1 = em.find(Member.class, member.getId());          //lazy 전략이므로 Member를 찾을 때 team은 쿼리문 안날라간다.
+            System.out.println("member1 = " + member1.getTeam().getClass()); //lazy 전략이므로 Team객체는 프록시 객체임을 알 수 있다.
+            System.out.println("=======================================");
+            System.out.println("member1 = " + member1.getTeam().getName());  //여기서(team 의 속성을 사용할 때) 프록시 초기화. Team 관련 쿼리 날라간다.
+            System.out.println("=======================================");
+
+
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
