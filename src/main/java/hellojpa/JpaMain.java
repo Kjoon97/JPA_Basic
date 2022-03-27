@@ -29,6 +29,12 @@ public class JpaMain {
 
             em.persist(parent1);    //Parent에서 cascade 설정한 덕분에 parent1만 persist()해도 child1, child2 모두 persist()됨.
 
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent1.getId());
+            findParent.getChildList().remove(0);      //부모 컬렉션에서 삭제 -> 0번은 고아 객체됨.
+
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
         }catch (Exception e){   //예외 발생 시 롤백
