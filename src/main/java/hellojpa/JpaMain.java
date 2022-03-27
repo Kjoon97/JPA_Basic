@@ -2,6 +2,9 @@ package hellojpa;
 
 import hellojpa.cascade.Child;
 import hellojpa.cascade.Parent;
+import hellojpa.embededtype.Address;
+import hellojpa.embededtype.Member2;
+import hellojpa.embededtype.Period;
 import hellojpa.inheritanceMapping.Movie;
 
 import javax.persistence.*;
@@ -20,21 +23,14 @@ public class JpaMain {
 
         //스프링이 자동으로 다 해주므로 스프링이랑 같이 쓸때는 em.persist(member)만해주면 자동으로 다 됨.
         try{
-            Child child1 = new Child();
-            Child child2 = new Child();
 
-            Parent parent1 = new Parent();
-            parent1.addChild(child1);
-            parent1.addChild(child2);
 
-            em.persist(parent1);    //Parent에서 cascade 설정한 덕분에 parent1만 persist()해도 child1, child2 모두 persist()됨.
+            Member2 member = new Member2();
+            member.setUsername("joon");
+            member.setHomeAddress(new Address("city", "street","code"));
+            member.setWorkPeriod(new Period());
 
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent1.getId());
-            findParent.getChildList().remove(0);      //부모 컬렉션에서 삭제 -> 0번은 고아 객체됨.
-
+            em.persist(member);
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
         }catch (Exception e){   //예외 발생 시 롤백
