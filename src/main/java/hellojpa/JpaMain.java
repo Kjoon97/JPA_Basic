@@ -18,14 +18,18 @@ public class JpaMain {
         try{
 
             Member member = new Member();
-            member.setCreateBy("kim");
             member.setUsername("user1");
-            member.setCreateDate(LocalDateTime.now());
 
             em.persist(member);
 
             em.flush();
             em.clear();
+
+//            Member member1 = em.find(Member.class, member.getId());
+            Member member1 = em.getReference(Member.class, member.getId());
+            System.out.println("member1 = " + member1.getClass());  //하이버네이트가 만든 프록시 클래스(가짜 클래스), get할때 프록시 초기화됨.
+            System.out.println("member1.username = " + member1.getUsername());
+            System.out.println("member1.username = " + member1.getUsername());
 
             tx.commit();   // 트랜잭션 커밋( 커밋을 꼭 해야 반영이 된다. ->영속성 컨텍스트에 저장된 객체들이 커밋 이 시점에 디비로 쿼리 날라가는 것이다.)
 
