@@ -21,6 +21,7 @@
             <version>5.4.22.Final</version>
         </dependency>
         <!-- H2 데이터베이스 -->
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
